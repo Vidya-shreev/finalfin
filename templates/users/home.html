@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Home - FinSecure{% endblock %}
+{% block content %}
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: 
+    radial-gradient(circle at 35% 60%, #204368 0%, #122237 80%),
+    url("https://example.com/path/to/your/image.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+
+.top-navbar {
+  position: fixed;
+  left: 0; top: 0;
+  background: linear-gradient(90deg, #193656 70%, #235184 140%);
+  width: 100vw; height: 56px; z-index: 999;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 2px 16px #18345c41; padding: 0 38px;
+}
+
+.top-navbar .brand { color: #fff; font-size: 1.27rem; font-weight: 700; letter-spacing: 0.06em; }
+.top-navbar .nav-links a { color: #dee9fd; text-decoration: none; font-weight: 500; margin-left: 32px; font-size: 1.07rem; transition: color .18s;}
+.top-navbar .nav-links a:hover { color: #75baff; }
+
+.hero-login-layout {
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass-card {
+  background: rgba(28, 47, 80, 0.56);
+  backdrop-filter: blur(18px);
+  border-radius: 36px;
+  border: 2px solid rgba(43, 195, 254, 0.18);
+  padding: 50px 45px 38px 45px;
+  width: 445px;
+  height: 525px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  justify-content: flex-start;
+  position: relative;
+  /* subtle blue glow and outline */
+  box-shadow:
+    0 0 38px 12px #249fff43,
+    0 0 8px 2px #9ed6f432,
+    0 6px 32px #2648ba40;
+  overflow: visible;
+}
+.glass-card:before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 40px;
+  pointer-events: none;
+  z-index: 1;
+  /* softened reflection */
+  box-shadow:
+    0 0 40px 10px #48c6ff3b,
+    0 0 0 2px #35abe226;
+  background:
+    radial-gradient(circle at 20% 60%,rgba(80,185,255,0.11) 25%,transparent 70%),
+    radial-gradient(circle at 80% 35%,rgba(80,185,255,0.08) 30%,transparent 68%);
+}
+
+.glass-card .large-login-icon {
+  margin-bottom: 26px;
+  margin-top: 6px;
+  width: 108px; height: 108px;
+  border-radius: 50%;
+  background: rgba(24,165,255,0.11);
+  border: 2px solid #67cfff66;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow:
+    0 0 14px 4px #36a9e033;
+  z-index: 2;
+  position: relative;
+}
+.glass-card .large-login-icon svg {
+  width: 57px; height: 57px;
+  display: block;
+  stroke: #72cfff;
+  stroke-width: 2.3;
+  fill: none;
+}
+
+/* User icon as a single circle with inside silhouette */
+.glass-card .large-login-icon .user-circle {
+  stroke: #55bbf8;
+  fill: none;
+}
+.glass-card .large-login-icon .user-head {
+  fill: #72cfff88;
+  stroke: #72cfff;
+}
+.glass-card .large-login-icon .user-body {
+  fill: #5dc8fc5a;
+  stroke: #72cfff;
+}
+
+
+.glass-card .login-title {
+  font-size: 2.7rem;
+  color: #85d6ff;
+  font-weight: 900;
+  margin-bottom: 18px;
+  letter-spacing: 0.06em;
+  text-align: center;
+  z-index: 2;
+}
+.glass-card .lead {
+  color: #c6e9fd;
+  font-size: 1.18rem;
+  margin-bottom: 54px;
+  font-weight: 500;
+  text-align: center;
+  z-index: 2;
+}
+.glass-card .btn-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 26px;
+  margin-top: 38px;
+  z-index: 2;
+}
+
+.glass-card .glass-btn {
+  background: linear-gradient(90deg,#40c6fa 5%,#095db9 95%);
+  color: #fff;
+  border: none;
+  border-radius: 2em;
+  font-weight: 800;
+  font-size: 1.23rem;
+  padding: 1.19em 3.16em;
+  cursor: pointer;
+  transition: background .18s, transform .13s;
+  text-decoration: none;
+  box-shadow: 0 1px 15px #1da2f954;
+}
+.glass-card .glass-btn-outline {
+  background: transparent;
+  color: #6bddfd;
+  border: 2px solid #6bddfd;
+  border-radius: 2em;
+  font-weight: 800;
+  font-size: 1.23rem;
+  padding: 1.19em 3.16em;
+  cursor: pointer;
+  transition: background .19s, color .15s;
+  text-decoration: none;
+}
+.glass-card .glass-btn:hover { background: linear-gradient(95deg, #0c6bd9, #40c6fa 98%); color: #fff; transform: scale(1.07);}
+.glass-card .glass-btn-outline:hover { background: #58aafd22; color: #fff; }
+
+@media (max-width:676px){
+  .glass-card {padding:24px 1vw;width:98vw; min-width:0; height:auto;}
+  .glass-card .large-login-icon { width: 68px; height: 68px;}
+  .glass-card .large-login-icon svg { width: 35px; height: 35px;}
+}
+</style>
+
+<div class="top-navbar">
+  <div class="brand">FinSecure</div>
+  <div class="nav-links">
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'signup' %}">Register</a>
+  </div>
+</div>
+<div class="hero-login-layout">
+  <div class="glass-card">
+    <div class="large-login-icon">
+      <svg viewBox="0 0 60 60">
+        <circle class="user-circle" cx="30" cy="30" r="27" />
+        <ellipse class="user-head" cx="30" cy="25" rx="8.8" ry="9.5"/>
+        <path class="user-body" d="M16,46c0-6.6,7-13,14-13s14,6.4,14,13" />
+      </svg>
+    </div>
+    <div class="login-title">FinSecure</div>
+    <div class="lead">Smart secure financial assistance & fraud detection platform.</div>
+    <div class="btn-row">
+      <a href="{% url 'login' %}" class="glass-btn">Login</a>
+      <a href="{% url 'signup' %}" class="glass-btn-outline">Register</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
