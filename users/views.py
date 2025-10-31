@@ -194,15 +194,23 @@ def dashboard_view(request):
         messages.warning(request, "⚠️ Your profile is incomplete. Please update it.")
 
     suggestions = SmartSuggestion.objects.filter(user=request.user).order_by("-created_at")[:5]
+    # Get total income (credit), spending (debit), and savings from transactions
+    transactions = Transaction.objects.filter(user=request.user)
+    total_income = transactions.filter(transaction_type="credit").aggregate(Sum("amount"))["amount__sum"] or 0
+    total_spending = transactions.filter(transaction_type="debit").aggregate(Sum("amount"))["amount__sum"] or 0
+    savings = total_income - total_spending
 
     context = {
         "profile": profile,
-        "income": profile.income or 0.0,
+        "income": total_income,
+        "spending": total_spending,
+        "savings": savings,
         "gmail_connected": request.session.get("gmail_connected", False),
         "latest_emails": request.session.get("latest_emails", []),
         "suggestions": suggestions,
     }
     return render(request, "users/dashboard.html", context)
+
 
 
 # ------------------- Dashboard Data (AJAX) -------------------

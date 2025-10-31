@@ -8,11 +8,8 @@ body {
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: 
-    radial-gradient(circle at 35% 60%, #204368 0%, #122237 80%),
-    url("https://example.com/path/to/your/image.jpg") no-repeat center center fixed;
-  background-size: cover;
+    radial-gradient(circle at 35% 60%, #204368 0%, #122237 80%);
 }
-
 
 .top-navbar {
   position: fixed;
@@ -22,18 +19,82 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   box-shadow: 0 2px 16px #18345c41; padding: 0 38px;
 }
-
 .top-navbar .brand { color: #fff; font-size: 1.27rem; font-weight: 700; letter-spacing: 0.06em; }
 .top-navbar .nav-links a { color: #dee9fd; text-decoration: none; font-weight: 500; margin-left: 32px; font-size: 1.07rem; transition: color .18s;}
 .top-navbar .nav-links a:hover { color: #75baff; }
 
-.hero-login-layout {
-  min-height: 85vh;
+.hero-flexbox {
   display: flex;
-  align-items: center;
+  flex-direction: row;
   justify-content: center;
+  align-items: stretch;
+  min-height: 100vh;
+  padding-top: 56px;
+  background: none;
+  max-width: 100vw;
 }
 
+.hero-left {
+  flex: 1.1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 0 0 8vw;
+  background: none;
+}
+.hero-left .headline {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 18px;
+  text-shadow: 0 6px 16px #233e6541;
+  letter-spacing: .01em;
+}
+.hero-left .fancy-gradient {
+  background: linear-gradient(97deg, #37e5ff 17%, #60f1b5 52%, #b6f0ff 98%);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-left .desc {
+  font-size: 1.26rem;
+  color: #b6e3ff;
+  line-height: 1.52;
+  font-weight: 500;
+  max-width: 480px;
+  padding-top: 12px;
+  padding-bottom: 14px;
+  text-shadow: 0 4px 18px #1e2e4944;
+}
+.hero-left .get-started-btn {
+  margin-top: 30px;
+  padding: 0.9em 2.3em;
+  border-radius: 2em;
+  background: linear-gradient(90deg, #46b1f3 25%, #308cf7 100%);
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 800;
+  border: none;
+  text-decoration: none;
+  box-shadow: 0 4px 16px #70e0fc44;
+  transition: background .17s, transform .13s;
+  letter-spacing: .02em;
+}
+.hero-left .get-started-btn:hover {
+  background: linear-gradient(80deg, #2b7be1 70%, #24ddff 100%);
+  color: #fff;
+  transform: translateY(-4px) scale(1.05);
+}
+
+.hero-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 7vw;
+  padding-left: 3vw;
+}
 .glass-card {
   background: rgba(28, 47, 80, 0.56);
   backdrop-filter: blur(18px);
@@ -48,7 +109,6 @@ body {
   margin: auto;
   justify-content: flex-start;
   position: relative;
-  /* subtle blue glow and outline */
   box-shadow:
     0 0 38px 12px #249fff43,
     0 0 8px 2px #9ed6f432,
@@ -62,7 +122,6 @@ body {
   border-radius: 40px;
   pointer-events: none;
   z-index: 1;
-  /* softened reflection */
   box-shadow:
     0 0 40px 10px #48c6ff3b,
     0 0 0 2px #35abe226;
@@ -70,7 +129,6 @@ body {
     radial-gradient(circle at 20% 60%,rgba(80,185,255,0.11) 25%,transparent 70%),
     radial-gradient(circle at 80% 35%,rgba(80,185,255,0.08) 30%,transparent 68%);
 }
-
 .glass-card .large-login-icon {
   margin-bottom: 26px;
   margin-top: 6px;
@@ -91,22 +149,9 @@ body {
   stroke-width: 2.3;
   fill: none;
 }
-
-/* User icon as a single circle with inside silhouette */
-.glass-card .large-login-icon .user-circle {
-  stroke: #55bbf8;
-  fill: none;
-}
-.glass-card .large-login-icon .user-head {
-  fill: #72cfff88;
-  stroke: #72cfff;
-}
-.glass-card .large-login-icon .user-body {
-  fill: #5dc8fc5a;
-  stroke: #72cfff;
-}
-
-
+.glass-card .large-login-icon .user-circle { stroke: #55bbf8; fill: none; }
+.glass-card .large-login-icon .user-head { fill: #72cfff88; stroke: #72cfff; }
+.glass-card .large-login-icon .user-body { fill: #5dc8fc5a; stroke: #72cfff; }
 .glass-card .login-title {
   font-size: 2.7rem;
   color: #85d6ff;
@@ -132,7 +177,6 @@ body {
   margin-top: 38px;
   z-index: 2;
 }
-
 .glass-card .glass-btn {
   background: linear-gradient(90deg,#40c6fa 5%,#095db9 95%);
   color: #fff;
@@ -161,10 +205,19 @@ body {
 .glass-card .glass-btn:hover { background: linear-gradient(95deg, #0c6bd9, #40c6fa 98%); color: #fff; transform: scale(1.07);}
 .glass-card .glass-btn-outline:hover { background: #58aafd22; color: #fff; }
 
-@media (max-width:676px){
+@media (max-width: 1060px) {
+  .hero-flexbox { flex-direction: column; min-height: 100vh; }
+  .hero-left, .hero-right { padding: 30px 5vw 0 5vw; text-align: center; }
+  .hero-left { justify-content: flex-start; align-items: center; }
+  .hero-left .desc, .hero-left .headline { max-width: none; }
+}
+@media (max-width: 676px){
   .glass-card {padding:24px 1vw;width:98vw; min-width:0; height:auto;}
   .glass-card .large-login-icon { width: 68px; height: 68px;}
   .glass-card .large-login-icon svg { width: 35px; height: 35px;}
+  .hero-left, .hero-right { padding: 12px 1vw; }
+  .hero-left .headline { font-size:2.1rem; }
+  .glass-card .login-title { font-size:2rem;}
 }
 </style>
 
@@ -175,20 +228,40 @@ body {
     <a href="{% url 'signup' %}">Register</a>
   </div>
 </div>
-<div class="hero-login-layout">
-  <div class="glass-card">
-    <div class="large-login-icon">
-      <svg viewBox="0 0 60 60">
-        <circle class="user-circle" cx="30" cy="30" r="27" />
-        <ellipse class="user-head" cx="30" cy="25" rx="8.8" ry="9.5"/>
-        <path class="user-body" d="M16,46c0-6.6,7-13,14-13s14,6.4,14,13" />
-      </svg>
+
+<div class="hero-flexbox">
+  <!-- LEFT (description) -->
+  <div class="hero-left">
+    <div class="headline">
+      Welcome to <span class="fancy-gradient">FinSecure</span>
     </div>
-    <div class="login-title">FinSecure</div>
-    <div class="lead">Smart secure financial assistance & fraud detection platform.</div>
-    <div class="btn-row">
-      <a href="{% url 'login' %}" class="glass-btn">Login</a>
-      <a href="{% url 'signup' %}" class="glass-btn-outline">Register</a>
+    <div class="desc">
+      FinSecure is your smart, secure financial assistance and fraud detection platform.<br><br>
+      <span style="color:#7bffc9;font-weight:600;">Key features:</span><br>
+      <span style="color:#e7fdff;">• Spot suspicious activity before it impacts you<br>
+      • Get real-time financial tips and AI-driven assistance<br>
+      • Manage and protect your finances in one simple dashboard</span><br><br>
+      <span style="font-size: 1.07em; color: #c1eaff;">Personalized, vigilant, and fast. Start your secure journey today – and empower your financial future.</span>
+    </div>
+    <a href="{% url 'signup' %}" class="get-started-btn">Get Started</a>
+  </div>
+
+  <!-- RIGHT (form) -->
+  <div class="hero-right">
+    <div class="glass-card">
+      <div class="large-login-icon">
+        <svg viewBox="0 0 60 60">
+          <circle class="user-circle" cx="30" cy="30" r="27" />
+          <ellipse class="user-head" cx="30" cy="25" rx="8.8" ry="9.5"/>
+          <path class="user-body" d="M16,46c0-6.6,7-13,14-13s14,6.4,14,13" />
+        </svg>
+      </div>
+      <div class="login-title">FinSecure</div>
+      <div class="lead">Smart secure financial assistance & fraud detection platform.</div>
+      <div class="btn-row">
+        <a href="{% url 'login' %}" class="glass-btn">Login</a>
+        <a href="{% url 'signup' %}" class="glass-btn-outline">Register</a>
+      </div>
     </div>
   </div>
 </div>

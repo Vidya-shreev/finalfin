@@ -24,13 +24,14 @@ body {
 .sidebar-nav {
   position: fixed;
   top: 0; left: 0; bottom: 0;
-  width: 60px;
+  width: 250px; /* Full width always */
   background: #0f5279;
   box-shadow: 2px 0 16px #79b4e060;
   z-index: 1100;
   display: flex;
   flex-direction: column;
-  transition: width .2s cubic-bezier(.4,2,.6,1);
+  transition: width .20s cubic-bezier(.4,2,.6,1);
+
 }
 .sidebar-nav.expanded { width: 250px; }
 .menu-toggle-btn {
@@ -42,25 +43,31 @@ body {
   text-align: center;
   cursor: pointer;
   outline: none;
+  margin-bottom: 4px;
+  display: block;
 }
+
+
 .sidebar-brand {
   color: #e1f4ff;
   font-weight: bold;
   font-size: 1.3rem;
   text-align: center;
   letter-spacing: .6px;
-  padding: 0 0 13px 0;
+  padding:  0 0 13px 0;
   white-space:nowrap;
   opacity: 0;
   height:0;
   transition: opacity .18s, height .18s;
+
 }
 .sidebar-nav.expanded .sidebar-brand { opacity:1; height:auto; padding-top:25px;}
 .sidebar-menu {
   flex: 1; margin-top: 0;
   display: flex; flex-direction: column;
 }
-.sidebar-menu a {
+.sidebar-menu a,
+.sidebar-menu .submenu-toggle {
   display: flex; align-items: center;
   font-size: 0;
   font-weight: 500;
@@ -71,70 +78,81 @@ body {
   transition: background .14s, color .14s, border-color .2s, font-size .18s, padding .18s;
   border-radius: 6px 0 0 6px;
   margin-bottom: 2px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
 }
-.sidebar-menu a .bi { margin-right: 0; font-size: 1.58em; transition:.17s;}
-.sidebar-menu a.active, .sidebar-menu a:hover {
+
+
+.sidebar-menu a .bi,
+.sidebar-menu .submenu-toggle .bi { margin-right: 0; font-size: 1.26em;}
+.sidebar-menu a.active, .sidebar-menu a:hover,
+.sidebar-menu .submenu-toggle.active, .sidebar-menu .submenu-toggle:hover {
   background: #2178b5;
   color: #fff;
   border-left: 5px solid #80c2fa;
 }
-.sidebar-menu a span {
-  margin-left: 14px;
+
+.sidebar-menu a span,
+.sidebar-menu .submenu-toggle span {
+  margin-left: 8px;
   white-space:nowrap;
   transition: opacity .17s;
   opacity:0;
   pointer-events:none;
+  font-size: 1.02em;
 }
-.sidebar-nav.expanded .sidebar-menu a {
-  font-size: 1.05rem;
+
+
+
+.sidebar-nav.expanded .sidebar-menu a,
+.sidebar-nav.expanded .sidebar-menu .submenu-toggle{
+  font-size: 1.07rem;
   padding: 14px 32px 14px 26px;
 }
-.sidebar-nav.expanded .sidebar-menu a span { opacity:1; pointer-events:auto;}
+.sidebar-nav.expanded .sidebar-menu a span,
+.sidebar-nav.expanded .sidebar-menu .submenu-toggle span {
+  opacity:1; pointer-events:auto;
+}
 
-/* Submenu Styles */
-.sidebar-menu-item {
-  position: relative;
-}
-.sidebar-menu-item > a {
-  cursor: pointer;
-}
-.submenu {
+/* Submenu styles */
+.sidebar-menu .submenu {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease-in-out;
-  background: #0a3d5b;
+  background: #165e88;
+  transition: max-height 0.27s cubic-bezier(.4,2,.6,1);
+  margin-left: 0;
+  padding-left: 0;
 }
-.submenu.open {
-  max-height: 400px;
+.sidebar-menu .submenu.open {
+  max-height: 180px;
 }
-.submenu a {
+.sidebar-menu .submenu a {
   font-size: 0;
-  padding: 12px 20px 12px 40px !important;
-  border-left: 3px solid transparent !important;
+  padding: 14px 32px 14px 56px;
+  border-radius: 6px 0 0 6px;
+  border-left: 3px solid #0f5279 !important;
+  color: #cbe8fc;
+  background: none;
+  margin-bottom: 0;
 }
-.sidebar-nav.expanded .submenu a {
-  font-size: 0.95rem;
-  padding: 10px 32px 10px 52px !important;
+.sidebar-nav.expanded .sidebar-menu .submenu a {
+  font-size: 1rem;
 }
-.submenu a:hover {
-  background: #1a6090;
+.sidebar-menu .submenu a.active, .sidebar-menu .submenu a:hover {
+  background: #2178b5;
+  color: #fff;
   border-left: 3px solid #80c2fa !important;
 }
-.submenu a.active {
-  background: #1a6090;
-  border-left: 3px solid #80c2fa !important;
-}
-.menu-arrow {
+.sidebar-menu .submenu-arrow {
   margin-left: auto;
-  transition: transform 0.3s;
-  opacity: 0;
+  transition: transform 0.2s;
 }
-.sidebar-nav.expanded .menu-arrow {
-  opacity: 1;
+.sidebar-menu .submenu-toggle[aria-expanded="true"] .submenu-arrow {
+  transform: rotate(90deg);
 }
-.menu-arrow.rotated {
-  transform: rotate(180deg);
-}
+
 
 .sidebar-footer {
   text-align: center;
@@ -143,20 +161,18 @@ body {
   font-size: 0.99rem;
 }
 
-
 .main-content {
-  margin-left: 60px;
-  transition: margin-left .2s cubic-bezier(.4,2,.6,1);
+  margin-left: 250px;
   padding: 32px 36px 32px 36px;
   min-height: 100vh;
+  transition: margin-left .20s cubic-bezier(.4,2,.6,1);
+
 }
 .sidebar-nav.expanded ~ .main-content {
   margin-left: 250px;
 }
 
-@media (max-width: 800px) {
-  .main-content {padding:9px 7px 12px 7px;}
-}
+
 
 /* Top Card: Welcome/Profile */
 .dashboard-header-card {
@@ -186,47 +202,6 @@ body {
 .profile-details { margin-top: 14px; }
 .profile-details p { margin: 5px 0; color: #2372a7;}
 .dashboard-header-card hr {margin:10px 0 6px 0;}
-/* Info Widget Cards Row */
-.info-widgets-row {
-  display: flex;
-  gap: 24px;
-  margin-bottom: 32px;
-  justify-content: flex-start;
-}
-.widget-card {
-  flex: 1;
-  padding: 20px 8px 16px 8px;
-  border-radius: 12px;
-  background: #eef6fc;
-  box-shadow: 0 1.5px 7px #bce0ff22;
-  display: flex; flex-direction: column;
-  align-items: center;
-  min-width: 170px;
-}
-.widget-card .widget-title {
-  color: #2372a7;
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 7px;
-}
-.widget-card .widget-value {
-  color: #2178b5;
-  font-size: 1.51rem;
-  font-weight: bold;
-}
-.widget-card .widget-secondary {
-  color: #88a5ba;
-  font-size: .97rem;
-  margin-top: 2px;
-}
-.widget-card.outstock {
-  background: #f8e5ea;
-}
-.widget-card.outstock .widget-title,
-.widget-card.outstock .widget-value {
-  color: #b35066;
-}
-/* Content Card Sections */
 .dashboard-card {
   background: linear-gradient(135deg, #f9fcfe 98%, #dcedf7 100%);
   border-radius: 17px;
@@ -243,7 +218,6 @@ body {
 .card-header.bg-info { background: #e4f2fa !important; color: #3082b7 !important; }
 .card-header.bg-dark { background: #256a92 !important; color: #fff !important; }
 .card-header { font-weight: bold; padding: 0.8em 1.3em; border-radius: 12px 12px 0 0;}
-
 .btn-primary, .btn-outline-primary {
   background-color: #2178b5 !important;
   border-color: #bee5fd !important; color: #fff;
@@ -258,199 +232,87 @@ body {
 .btn-danger, .btn-outline-danger { background-color: #be6c91 !important; color: #fff !important; border-color: #9c3d65 !important;}
 .btn { border-radius: 8px; }
 
-@media (max-width: 900px) {
-  .sidebar-nav { width: 56px; }
-  .sidebar-brand { font-size: 1.05rem; padding: 20px 0; }
-  .sidebar-menu a { font-size: 0; padding: 13px 10px; }
-  .sidebar-menu a .bi { font-size: 1.1rem; margin: 0; }
-  .sidebar-menu a span { display: none; }
-  .main-content { margin-left: 80px; padding: 15px 4px 12px 10px;}
-  .info-widgets-row { flex-direction: column; gap: 11px;}
+.graph-section { display: none; }
+.graph-section.active { display: block; }
+
+/* For vertical submenu under Reports (inherits your existing sidebar style) */
+.sidebar-menu .submenu-vertical {
+  display: none;
+  background: #165e88;
+  margin-left: 0;
+  border-radius: 6px 0 0 6px;
+  padding: 0;
+}
+.sidebar-menu .submenu-vertical.open { display: block; }
+.sidebar-menu .submenu-vertical a {
+  display: flex;
+  align-items: center;
+  color: #e0f3ff;
+  font-size: 1rem;
+  padding: 14px 32px 14px 56px;
+  border-radius: 6px 0 0 6px;
+  border-left: 3px solid #0f5279 !important;
+  background: none;
+  margin-bottom: 0;
+  text-decoration: none;
+  transition: background .14s, color .14s, border-color .2s;
+}
+.sidebar-menu .submenu-vertical a.active, .sidebar-menu .submenu-vertical a:hover {
+  background: #2178b5;
+  color: #fff;
+  border-left: 3px solid #80c2fa !important;
+}
+.sidebar-menu .submenu-vertical .bi {
+  margin-right: 10px;
+  font-size: 1.18em;
 }
 </style>
 
-<nav class="sidebar-nav" id="sidebar-nav" aria-label="Side Navigation">
+<!-- Sidebar Navigation -->
+<nav class="sidebar-nav" aria-label="Side Navigation" id="sidebar-nav">
   <button class="menu-toggle-btn" id="menu-toggle-btn" aria-label="Expand/collapse sidebar">
     <i class="bi bi-list"></i>
   </button>
+
   <div class="sidebar-brand">FinSecure</div>
   <div class="sidebar-menu">
     <a href="{% url 'dashboard' %}" class="active"><i class="bi bi-house-door-fill"></i><span>Dashboard</span></a>
-    
-    <!-- Transactions with Submenu -->
-    <div class="sidebar-menu-item">
-      <a href="#" id="transactions-toggle">
-        <i class="bi bi-cash-coin"></i>
-        <span>Transactions</span>
-        <i class="bi bi-chevron-down menu-arrow"></i>
-      </a>
+    <div>
+      <button class="submenu-toggle" id="transactions-menu" aria-expanded="false">
+        <i class="bi bi-cash-coin"></i><span>Transactions</span>
+        <span class="submenu-arrow bi bi-chevron-right"></span>
+      </button>
       <div class="submenu" id="transactions-submenu">
-        <a href="{% url 'transactions:add' %}">
-          <i class="bi bi-plus-circle"></i>
-          <span>Add Transaction</span>
-        </a>
-        <a href="{% url 'transactions:list' %}">
-          <i class="bi bi-list-ul"></i>
-          <span>View All</span>
-        </a>
+        <a href="{% url 'transactions:add' %}"><i class="bi bi-plus-circle"></i><span>Add Transaction</span></a>
+        <a href="{% url 'transactions:list' %}"><i class="bi bi-list-ul"></i><span>View All</span></a>
       </div>
     </div>
-    
+
     <a href="{% url 'fraud_alerts' %}"><i class="bi bi-exclamation-triangle"></i><span>Fraud Alerts</span></a>
-    
-    <!-- Reports with Submenu -->
-    <div class="sidebar-menu-item">
-      <a href="#" id="reports-toggle">
-        <i class="bi bi-bar-chart-line"></i>
-        <span>Reports</span>
-        <i class="bi bi-chevron-down menu-arrow"></i>
-      </a>
-      <div class="submenu" id="reports-submenu">
-        <a href="#spendingGraphs" data-bs-toggle="collapse">
-          <i class="bi bi-graph-up"></i>
-          <span>Spending Graphs</span>
-        </a>
-        <a href="#fraudAmountGraphs" data-bs-toggle="collapse">
-          <i class="bi bi-exclamation-triangle-fill"></i>
-          <span>Fraud Amount</span>
-        </a>
-        <a href="#fraudCountGraphs" data-bs-toggle="collapse">
-          <i class="bi bi-bar-chart-fill"></i>
-          <span>Fraud Count</span>
-        </a>
+    <button class="submenu-toggle" id="reports-menu" aria-expanded="false">
+
+        <i class="bi bi-bar-chart-line"></i><span>Reports</span>
+        <span class="submenu-arrow bi bi-chevron-right"></span>
+      </button>
+      <div class="submenu-vertical" id="reports-submenu">
+        <a href="#" class="show-graph" data-graph="spending"><i class="bi bi-graph-up"></i>Spending Graphs</a>
+        <a href="#" class="show-graph" data-graph="fraud-amount"><i class="bi bi-exclamation-diamond"></i>Fraud Amount</a>
+        <a href="#" class="show-graph" data-graph="fraud-count"><i class="bi bi-bar-chart"></i>Fraud Count</a>
       </div>
-    </div>
-    
-    <!-- Settings with Submenu -->
-    <div class="sidebar-menu-item">
-      <a href="#" id="settings-toggle">
-        <i class="bi bi-gear"></i>
-        <span>Settings</span>
-        <i class="bi bi-chevron-down menu-arrow"></i>
-      </a>
-      <div class="submenu" id="settings-submenu">
-        <a href="{% url 'profile' %}">
-          <i class="bi bi-person-circle"></i>
-          <span>Update Profile</span>
-        </a>
-        <a href="{% url 'connect_gmail' %}">
-          <i class="bi bi-envelope-at"></i>
-          <span>Connect Gmail</span>
-        </a>
-        <a href="{% url 'password_change' %}">
-          <i class="bi bi-key-fill"></i>
-          <span>Change Password</span>
-        </a>
-      </div>
-    </div>
-    
-    <!-- Help -->
-    <a href="#" id="help-link" data-bs-toggle="modal" data-bs-target="#helpModal"><i class="bi bi-question-circle"></i><span>Help</span></a>
+    <a href="{% url 'settings' %}"><i class="bi bi-gear"></i><span>Settings</span></a>
   </div>
   <div class="sidebar-footer">© {{ now|date:"Y" }} FinSecure</div>
 </nav>
 
-<!-- Help Modal -->
-<div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header" style="background: #2178b5; color: white;">
-        <h5 class="modal-title" id="helpModalLabel"><i class="bi bi-question-circle me-2"></i>Help & Support</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <h6 class="fw-bold text-primary">📋 Frequently Asked Questions</h6>
-        
-        <div class="accordion" id="helpAccordion">
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                How do I add a transaction?
-              </button>
-            </h2>
-            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#helpAccordion">
-              <div class="accordion-body">
-                Navigate to <strong>Transactions > Add Transaction</strong> from the sidebar menu. Fill in the transaction details including amount, category, date, and description.
-              </div>
-            </div>
-          </div>
-          
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                How do I connect Gmail?
-              </button>
-            </h2>
-            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
-              <div class="accordion-body">
-                Go to <strong>Settings > Connect Gmail</strong> to link your Gmail account. This allows the system to automatically track transactions from your emails.
-              </div>
-            </div>
-          </div>
-          
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                How do I view financial reports?
-              </button>
-            </h2>
-            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
-              <div class="accordion-body">
-                Click on <strong>Reports</strong> in the sidebar to access various financial reports including Spending Graphs, Fraud Amount, and Fraud Count analytics.
-              </div>
-            </div>
-          </div>
-          
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-                What are fraud alerts?
-              </button>
-            </h2>
-            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
-              <div class="accordion-body">
-                Fraud alerts notify you of suspicious transactions detected by our AI-powered fraud detection system. Check <strong>Fraud Alerts</strong> regularly to review flagged transactions.
-              </div>
-            </div>
-          </div>
-          
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
-                How do I update my profile?
-              </button>
-            </h2>
-            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
-              <div class="accordion-body">
-                Navigate to <strong>Settings > Update Profile</strong> to edit your personal information including phone number, occupation, and income details.
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <hr class="my-4">
-        
-        <h6 class="fw-bold text-primary">📞 Contact Support</h6>
-        <p>If you need further assistance, please contact us:</p>
-        <ul>
-          <li><strong>Email:</strong> support@finsecure.com</li>
-          <li><strong>Phone:</strong> +91-XXXX-XXXXX</li>
-        </ul>
-        
-        <div class="alert alert-info mt-3">
-          <i class="bi bi-info-circle me-2"></i>
-          <strong>Tip:</strong> Expand the sidebar by clicking the menu icon to see full navigation labels!
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
+<!-- Main Content -->
 <div class="main-content">
-  <!-- User Welcome Card -->
+  <!-- Loader -->
+  <div id="loader" class="loader-overlay d-none">
+    <div class="spinner-border text-primary" role="status"></div>
+    <span class="ms-2">Loading...</span>
+  </div>
+
+  <!-- User Profile Card (Enhanced) -->
   <div class="dashboard-header-card">
     <div class="profile-card">
       <div class="profile-header">
@@ -460,118 +322,147 @@ body {
           <img src="{% static 'images/default-profile.png' %}" alt="Default Profile">
         {% endif %}
         <div>
-          <h2 style="color:#2178b5;font-size:1.38rem;font-weight:700;">Welcome, {{ user.username }} 👋</h2>
-          <p style="color:#74b0d0">Your personalized financial dashboard</p>
+          <h2>Welcome, {{ user.get_full_name|default:user.username }} 👋</h2>
+          <p>Your personalized financial dashboard</p>
         </div>
       </div>
       <hr>
       <div class="profile-details">
         <p><strong>📧 Email:</strong> {{ user.email }}</p>
-        <p><strong>📞 Phone:</strong> {{ user.profile.phone }}</p>
-        <p><strong>💼 Occupation:</strong> {{ user.profile.occupation }}</p>
-        <p><strong>💰 Income:</strong> ₹{{ user.profile.income|floatformat:2 }}</p>
+        <p><strong>📞 Phone:</strong> {{ user.profile.phone|default:"Not set" }}</p>
+        <p><strong>💼 Occupation:</strong> {{ user.profile.occupation|default:"Not set" }}</p>
+        <p><strong>💰 Income:</strong> ₹<span id="income">{{ income|default:user.profile.income|default:"0.00"|floatformat:2 }}</span></p>
       </div>
-      <div style="margin-top: 13px;">
+      <div style="margin-top: 15px;">
+        <a href="{% url 'profile' %}" class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i> Update Profile</a>
         {% if gmail_connected %}
-          <span class="badge bg-success">✔ Gmail Connected</span>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-  
-  <!-- Blue Theme Information Widgets Row -->
-  <div class="info-widgets-row">
-    <div class="widget-card">
-      <div class="widget-title">Financial Assistance</div>
-      <a href="{% url 'assist_home_home' %}" class="btn btn-warning btn-sm" style="width:96%;">💵 Financial Assistance</a>
-    </div>
-    <div class="widget-card">
-      <div class="widget-title">Transactions</div>
-      <a href="{% url 'transactions:add' %}" class="btn btn-success btn-sm" style="width:88%;">Add Transaction</a>
-    </div>
-    <div class="widget-card outstock">
-      <div class="widget-title">Smart Suggestions</div>
-      <div style="margin-top:6px;">
-        {% if suggestions %}
-          <ul class="list-group list-group-flush">
-            {% for s in suggestions %}
-              <li class="list-group-item d-flex align-items-center">
-                {% if s.is_alert %}
-                  <span class="me-2 text-danger fw-bold">⚠️</span>
-                {% else %}
-                  <span class="me-2 text-success">💡</span>
-                {% endif %}
-                <span>{{ s.suggestion }}</span>
-                <small class="text-muted ms-auto">{{ s.created_at|date:"M d, Y H:i" }}</small>
-              </li>
-            {% endfor %}
-          </ul>
+          <span class="badge bg-success ms-2"><i class="bi bi-check-circle"></i> Gmail Connected</span>
         {% else %}
-          <p class="text-muted mb-0">No suggestions available yet.</p>
+          <a href="{% url 'connect_gmail' %}" class="btn btn-danger btn-sm ms-2"><i class="bi bi-envelope"></i> Connect Gmail</a>
         {% endif %}
       </div>
     </div>
   </div>
-  
-  <!-- Main Card Sections -->
+
+  <!-- Featured Widgets -->
   <div class="dashboard-card">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card-header bg-primary mb-2">💰 Recent Gmail Transactions</div>
-        <div class="card-body">
-          {% if transactions %}
-            <div class="table-responsive">
-              <table class="table table-striped table-hover gmail-txns align-middle">
-                <thead>
-                  <tr>
-                    <th>Description</th>
-                    <th>Amount</th>
-                    <th>Currency</th>
-                    <th>Email</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for txn in transactions %}
-                  <tr>
-                    <td>{{ txn.description }}</td>
-                    <td>{{ txn.amount }}</td>
-                    <td>{{ txn.currency }}</td>
-                    <td>
-                      <a href="https://mail.google.com/mail/u/0/#inbox/{{ txn.message_id }}" target="_blank" class="btn btn-sm btn-outline-primary">📧 View Email</a>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          {% else %}
-            <p class="text-muted">No Gmail transactions found.</p>
-          {% endif %}
+    <div class="row gx-3">
+      <div class="col-md-4 mb-3">
+        <div class="card h-100 p-2 shadow-sm">
+          <div class="card-header bg-warning text-dark fw-bold">Financial Assistance</div>
+          <div class="card-body text-center">
+            <a href="{% url 'assist_home_home' %}" class="btn btn-warning btn-lg">💵 Financial Assistance</a>
+          </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="card-header bg-info mb-2">📧 Latest Emails</div>
-        <div class="card-body">
-          {% if latest_emails %}
-            <ul class="list-group list-group-flush">
-              {% for email in latest_emails %}
-              <li class="list-group-item">
-                <strong>From:</strong> {{ email.from }}<br>
-                <strong>Subject:</strong> {{ email.subject }}<br>
-                <small>{{ email.snippet }}</small>
-              </li>
-              {% endfor %}
+      <div class="col-md-4 mb-3">
+        <div class="card h-100 p-2 shadow-sm">
+          <div class="card-header bg-dark text-white">Transactions</div>
+          <div class="card-body d-flex flex-column justify-content-center align-items-center">
+            <a href="{% url 'transactions:add' %}" class="btn btn-success btn-sm mb-2">Add Transaction</a>
+            
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card h-100 p-2 shadow-sm">
+          <div class="card-header bg-success text-white">Smart Suggestions</div>
+          <div class="card-body">
+            <ul id="suggestions" class="list-group list-group-flush">
+              {% if suggestions %}
+                {% for s in suggestions %}
+                  <li class="list-group-item d-flex align-items-center {% if s.is_alert %}alert{% endif %}">
+                    {% if s.is_alert %}
+                      <span class="me-2 text-danger fw-bold">⚠</span>
+                    {% else %}
+                      <span class="me-2 text-success">💡</span>
+                    {% endif %}
+                    <span>{{ s.suggestion }}</span>
+                    <small class="text-muted ms-auto">{{ s.created_at|date:"M d, Y H:i" }}</small>
+                  </li>
+                {% endfor %}
+              {% else %}
+                <li class="text-muted">No suggestions available.</li>
+              {% endif %}
             </ul>
-          {% else %}
-            <p class="text-muted">
-            {% if gmail_connected %}No recent emails found.{% else %}Please connect Gmail to see emails.{% endif %}
-            </p>
-          {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gmail Transactions Table -->
+    <div class="card shadow-sm mt-4">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0">💰 Recent Gmail Transactions</h5>
+      </div>
+      <div class="card-body">
+        {% if transactions %}
+        <div class="table-responsive">
+          <table class="table table-striped table-hover gmail-txns align-middle">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Currency</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for txn in transactions %}
+              <tr>
+                <td>{{ txn.description }}</td>
+                <td>{{ txn.amount }}</td>
+                <td>{{ txn.currency }}</td>
+                <td>
+                  <a href="https://mail.google.com/mail/u/0/#inbox/{{ txn.message_id }}" 
+                     target="_blank" 
+                     class="btn btn-sm btn-outline-primary">
+                     📧 View Email
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p class="text-muted">No Gmail transactions found.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Latest Emails -->
+    <div class="row gx-3 mt-4">
+      <div class="col-md-12 mb-3">
+        <div class="card h-100 p-2 shadow-sm">
+          <div class="card-header bg-info text-white">📧 Latest Emails</div>
+          <div class="card-body">
+            {% if latest_emails %}
+              <ul class="list-group list-group-flush">
+                {% for email in latest_emails %}
+                  <li class="list-group-item">
+                    <strong>From:</strong> {{ email.from }}<br>
+                    <strong>Subject:</strong> {{ email.subject }}<br>
+                    <small>{{ email.snippet }}</small>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="text-muted">
+                {% if gmail_connected %}
+                  No recent emails found.
+                {% else %}
+                  Please connect Gmail to see emails.
+                {% endif %}
+              </p>
+            {% endif %}
+          </div>
         </div>
       </div>
     </div>
   </div>
-  
+
+  <!-- Financial Health Summary -->
   <div class="dashboard-card">
     <div class="card-header bg-warning d-flex justify-content-between align-items-center">
       <span class="fw-bold">📊 Financial Health Summary</span>
@@ -606,34 +497,16 @@ body {
       </div>
     </div>
   </div>
-  
-  <!-- Combined Overview Graph (All Time) -->
-  <div class="dashboard-card">
-    <div class="card-header bg-primary text-white">
-      <span>📊 Financial Overview (All Time)</span>
-    </div>
-    <div class="row mt-4 mb-3">
-      <div class="col-md-4 mb-3">
-        <h6 class="text-center" style="color:#2178b5;font-weight:600;">Spending Overview</h6>
-        <canvas id="overviewSpendingChart"></canvas>
-      </div>
-      <div class="col-md-4 mb-3">
-        <h6 class="text-center" style="color:#2178b5;font-weight:600;">Fraud Amount Overview</h6>
-        <canvas id="overviewFraudAmountChart"></canvas>
-      </div>
-      <div class="col-md-4 mb-3">
-        <h6 class="text-center" style="color:#2178b5;font-weight:600;">Fraud Count Overview</h6>
-        <canvas id="overviewFraudCountChart"></canvas>
-      </div>
-    </div>
-  </div>
 
-  <!-- Hidden Collapsible Sections for Sidebar Navigation -->
-  <div id="spendingGraphs" class="collapse">
-    <div class="dashboard-card">
-      <div class="card-header bg-primary text-white">
-        <span>📈 Spending Graphs</span>
-      </div>
+  <!-- Spending Graphs -->
+  <div id="spending-graph-section" class="graph-section"></div>
+  <div class="dashboard-card">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center toggle-collapse"
+         data-bs-toggle="collapse" data-bs-target="#spendingGraphs" style="cursor:pointer;">
+      <span>📈 Spending Graphs</span>
+      <span class="arrow">▼</span>
+    </div>
+    <div id="spendingGraphs" class="collapse">
       <div class="row mt-4 mb-2">
         <div class="col-md-4 mb-2"><h6>Spending (7 Days)</h6><canvas id="spendingChart7d"></canvas></div>
         <div class="col-md-4 mb-2"><h6>Spending (30 Days)</h6><canvas id="spendingChart30d"></canvas></div>
@@ -641,12 +514,16 @@ body {
       </div>
     </div>
   </div>
-  
-  <div id="fraudAmountGraphs" class="collapse">
-    <div class="dashboard-card">
-      <div class="card-header bg-danger text-white">
-        <span>⚠️ Fraud Amount Graphs</span>
-      </div>
+
+  <!-- Fraud Amount Graphs -->
+  <div id="fraud-amount-graph-section" class="graph-section"></div>
+  <div class="dashboard-card">
+    <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center toggle-collapse"
+         data-bs-toggle="collapse" data-bs-target="#fraudAmountGraphs" style="cursor:pointer;">
+      <span>⚠️ Fraud Amount Graphs</span>
+      <span class="arrow">▼</span>
+    </div>
+    <div id="fraudAmountGraphs" class="collapse">
       <div class="row mt-4 mb-2">
         <div class="col-md-4 mb-2"><h6>Fraud Amount (7 Days)</h6><canvas id="fraudAmountChart7d"></canvas></div>
         <div class="col-md-4 mb-2"><h6>Fraud Amount (30 Days)</h6><canvas id="fraudAmountChart30d"></canvas></div>
@@ -654,12 +531,16 @@ body {
       </div>
     </div>
   </div>
-  
-  <div id="fraudCountGraphs" class="collapse">
-    <div class="dashboard-card">
-      <div class="card-header bg-warning text-white">
-        <span>📊 Fraud Count Graphs</span>
-      </div>
+
+  <!-- Fraud Count Graphs -->
+  <div id="fraud-count-graph-section" class="graph-section"></div>
+  <div class="dashboard-card">
+    <div class="card-header bg-warning d-flex justify-content-between align-items-center toggle-collapse"
+         data-bs-toggle="collapse" data-bs-target="#fraudCountGraphs" style="cursor:pointer;">
+      <span>📊 Fraud Count Graphs</span>
+      <span class="arrow">▼</span>
+    </div>
+    <div id="fraudCountGraphs" class="collapse">
       <div class="row mt-4 mb-2">
         <div class="col-md-4 mb-2"><h6>Fraud Count (7 Days)</h6><canvas id="fraudCountChart7d"></canvas></div>
         <div class="col-md-4 mb-2"><h6>Fraud Count (30 Days)</h6><canvas id="fraudCountChart30d"></canvas></div>
@@ -669,124 +550,125 @@ body {
   </div>
 </div>
 
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-const sidebar = document.getElementById('sidebar-nav');
-const toggleBtn = document.getElementById('menu-toggle-btn');
-
-toggleBtn.onclick = function() {
-  sidebar.classList.toggle('expanded');
-  document.querySelector('.main-content').style.marginLeft =
-    sidebar.classList.contains('expanded') ? "250px" : "60px";
-};
-
-// Transactions Submenu Toggle
-const transactionsToggle = document.getElementById('transactions-toggle');
-const transactionsSubmenu = document.getElementById('transactions-submenu');
-const transactionsArrow = transactionsToggle.querySelector('.menu-arrow');
-
-transactionsToggle.addEventListener('click', function(e) {
-  e.preventDefault();
-  transactionsSubmenu.classList.toggle('open');
-  transactionsArrow.classList.toggle('rotated');
-});
-
-// Reports Submenu Toggle
-const reportsToggle = document.getElementById('reports-toggle');
-const reportsSubmenu = document.getElementById('reports-submenu');
-const reportsArrow = reportsToggle.querySelector('.menu-arrow');
-
-reportsToggle.addEventListener('click', function(e) {
-  e.preventDefault();
-  reportsSubmenu.classList.toggle('open');
-  reportsArrow.classList.toggle('rotated');
-});
-
-// Settings Submenu Toggle
-const settingsToggle = document.getElementById('settings-toggle');
-const settingsSubmenu = document.getElementById('settings-submenu');
-const settingsArrow = settingsToggle.querySelector('.menu-arrow');
-
-settingsToggle.addEventListener('click', function(e) {
-  e.preventDefault();
-  settingsSubmenu.classList.toggle('open');
-  settingsArrow.classList.toggle('rotated');
-});
-
-// Submenu links scroll to sections and expand them
-document.querySelectorAll('#reports-submenu a').forEach(link => {
-  link.addEventListener('click', function(e) {
-    const targetId = this.getAttribute('href');
-    if (targetId.startsWith('#')) {
-      const targetSection = document.querySelector(targetId);
-      if (targetSection) {
-        // Expand the section if collapsed
-        if (!targetSection.classList.contains('show')) {
-          const collapseInstance = new bootstrap.Collapse(targetSection, {
-            toggle: true
-          });
-        }
-        // Scroll to the section
-        setTimeout(() => {
-          targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 350);
-      }
+  // Hamburger Sidebar Toggle
+  const sidebar = document.getElementById('sidebar-nav');
+  const toggleBtn = document.getElementById('menu-toggle-btn');
+  toggleBtn.onclick = function() {
+    sidebar.classList.toggle('expanded');
+    if (sidebar.classList.contains('expanded')) {
+      document.querySelector('.main-content').style.marginLeft = "250px";
+    } else {
+      document.querySelector('.main-content').style.marginLeft = "60px";
     }
+  };
+
+  // Transactions submenu toggle
+  const submenuToggle = document.getElementById('transactions-menu');
+  const submenu = document.getElementById('transactions-submenu');
+  submenuToggle.onclick = function() {
+    const expanded = submenuToggle.getAttribute('aria-expanded') === 'true';
+    submenuToggle.setAttribute('aria-expanded', !expanded);
+    submenu.classList.toggle('open');
+  };
+  
+
+   // Reports submenu vertical toggle
+  const reportsToggle = document.getElementById('reports-menu');
+  const reportsMenu = document.getElementById('reports-submenu');
+  reportsToggle.onclick = function() {
+    const expanded = reportsToggle.getAttribute('aria-expanded') === 'true';
+    reportsToggle.setAttribute('aria-expanded', !expanded);
+    reportsMenu.classList.toggle('open');
+  };
+  // Show correct graph section
+  document.querySelectorAll('.show-graph').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelectorAll('.graph-section').forEach(sec => sec.classList.remove('active'));
+      if (this.dataset.graph === 'spending')
+        document.getElementById('spending-graph-section').classList.add('active');
+      if (this.dataset.graph === 'fraud-amount')
+        document.getElementById('fraud-amount-graph-section').classList.add('active');
+      if (this.dataset.graph === 'fraud-count')
+        document.getElementById('fraud-count-graph-section').classList.add('active');
+      reportsMenu.classList.remove('open');
+      reportsToggle.setAttribute('aria-expanded', 'false');
+      setTimeout(() => {
+        let visible = document.querySelector('.graph-section.active');
+        if (visible) visible.scrollIntoView({behavior: "smooth"});
+      }, 100);
+    });
   });
-});
 
-// Optionally: Expand by default on wide screens
-if(window.innerWidth > 1000){
-  sidebar.classList.add('expanded');
-  document.querySelector('.main-content').style.marginLeft = "250px";
-}
 
-// Dashboard graphs
-let chartInstances = {};
-function renderChart(canvasId, labels, dataArr, labelName, color, type="line") {
-  if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
-  const ctx = document.getElementById(canvasId).getContext("2d");
-  chartInstances[canvasId] = new Chart(ctx, {
-    type: type,
-    data: { labels: labels, datasets: [{ label: labelName, data: dataArr,
-      borderColor: color, backgroundColor: type==="line"? color+"33": color,
-      fill: type==="line", tension:0.3 }] },
-    options: { responsive: true, plugins: { legend: { position: "top" } } }
+  let chartInstances = {};
+  let selectedPeriod = "all";
+  function renderChart(canvasId, labels, dataArr, labelName, color, type="line") {
+    if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
+    const ctx = document.getElementById(canvasId).getContext("2d");
+    chartInstances[canvasId] = new Chart(ctx, {
+      type: type,
+      data: { labels: labels, datasets: [{
+        label: labelName,
+        data: dataArr,
+        borderColor: color,
+        backgroundColor: type === "line" ? color + "33" : color,
+        fill: type === "line",
+        tension: 0.3
+      }] },
+      options: { responsive: true, plugins: { legend: { position: "top" } } }
+    });
+  }
+  function fetchDashboardData(period = "all") {
+    selectedPeriod = period;
+    document.getElementById("loader").classList.remove("d-none");
+    fetch(`{% url 'dashboard_data' %}?period=${period}`)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('income-card').innerText = data.income.toFixed(2);
+        document.getElementById('spending').innerText = data.spending.toFixed(2);
+        document.getElementById('savings').innerText = data.savings.toFixed(2);
+        // Alerts
+        const alertsBox = document.getElementById("alerts");
+        alertsBox.innerHTML = "";
+        if (data.alerts.length) {
+          data.alerts.forEach(a => alertsBox.innerHTML += `<li>🔔 ${a}</li>`);
+        } else {
+          alertsBox.innerHTML = '<li class="text-success">No unusual activity</li>';
+        }
+        // Suggestions
+        const suggestionsBox = document.getElementById("suggestions");
+        suggestionsBox.innerHTML = "";
+        if (data.suggestions.length) {
+          data.suggestions.forEach(s => suggestionsBox.innerHTML += `<li class="list-group-item">💡 ${s}</li>`);
+        } else {
+          suggestionsBox.innerHTML = '<li class="list-group-item">No suggestions available.</li>';
+        }
+        renderChart("spendingChart7d", data.labels_7d, data.spending_7d, "Spending (7d)", "#b67ee6");
+        renderChart("spendingChart30d", data.labels_30d, data.spending_30d, "Spending (30d)", "#993fc7");
+        renderChart("spendingChartAll", data.labels_all, data.spending_all, "Spending (All)", "#a459c8");
+        renderChart("fraudAmountChart7d", data.labels_7d, data.fraud_7d_amount, "Fraud Amount (7d)", "#d36bea", "bar");
+        renderChart("fraudAmountChart30d", data.labels_30d, data.fraud_30d_amount, "Fraud Amount (30d)", "#8d53c9", "bar");
+        renderChart("fraudAmountChartAll", data.labels_all, data.fraud_all_amount, "Fraud Amount (All)", "#b67ee6", "bar");
+        renderChart("fraudCountChart7d", data.labels_7d, data.fraud_7d_count, "Fraud Count (7d)", "#c992e0", "bar");
+        renderChart("fraudCountChart30d", data.labels_30d, data.fraud_30d_count, "Fraud Count (30d)", "#993fc7", "bar");
+        renderChart("fraudCountChartAll", data.labels_all, data.fraud_all_count, "Fraud Count (All)", "#e9bafd", "bar");
+      })
+      .finally(() => document.getElementById("loader").classList.add("d-none"));
+  }
+  document.getElementById("filter7").addEventListener("click", () => fetchDashboardData("7"));
+  document.getElementById("filter30").addEventListener("click", () => fetchDashboardData("30"));
+  document.getElementById("filterAll").addEventListener("click", () => fetchDashboardData("all"));
+  window.onload = () => fetchDashboardData("all");
+  document.querySelectorAll(".toggle-collapse").forEach(header => {
+    const arrow = header.querySelector(".arrow");
+    const targetId = header.getAttribute("data-bs-target");
+    const target = document.querySelector(targetId);
+    target.addEventListener("show.bs.collapse", () => arrow.textContent = "▲");
+    target.addEventListener("hide.bs.collapse", () => arrow.textContent = "▼");
   });
-}
-
-function fetchDashboardData(period="all") {
-  document.getElementById("loader").classList.remove("d-none");
-  fetch(`{% url 'dashboard_data' %}?period=${period}`)
-    .then(r=>r.json()).then(data=>{
-      document.getElementById('income-card').innerText = data.income.toFixed(2);
-      document.getElementById('spending').innerText = data.spending.toFixed(2);
-      document.getElementById('savings').innerText = data.savings.toFixed(2);
-      
-      // Alerts
-      const alertsBox=document.getElementById("alerts"); alertsBox.innerHTML="";
-      if(data.alerts.length){data.alerts.forEach(a=>alertsBox.innerHTML+=`<li>🔔 ${a}</li>`);} else {alertsBox.innerHTML='<li class="text-success">No unusual activity</li>';}
-      
-      // Render Overview Charts (All Time - shown by default)
-      renderChart("overviewSpendingChart",data.labels_all,data.spending_all,"Spending (All)","#2178b5","line");
-      renderChart("overviewFraudAmountChart",data.labels_all,data.fraud_all_amount,"Fraud Amount (All)","#be6c91","bar");
-      renderChart("overviewFraudCountChart",data.labels_all,data.fraud_all_count,"Fraud Count (All)","#329ae6","bar");
-      
-      // Render detailed charts for sidebar navigation
-      renderChart("spendingChart7d",data.labels_7d,data.spending_7d,"Spending (7d)","#329ae6");
-      renderChart("spendingChart30d",data.labels_30d,data.spending_30d,"Spending (30d)","#2178b5");
-      renderChart("spendingChartAll",data.labels_all,data.spending_all,"Spending (All)","#256a92");
-      renderChart("fraudAmountChart7d",data.labels_7d,data.fraud_7d_amount,"Fraud Amount (7d)","#a2bdd8","bar");
-      renderChart("fraudAmountChart30d",data.labels_30d,data.fraud_30d_amount,"Fraud Amount (30d)","#94aecd","bar");
-      renderChart("fraudAmountChartAll",data.labels_all,data.fraud_all_amount,"Fraud Amount (All)","#c9e1f8","bar");
-      renderChart("fraudCountChart7d",data.labels_7d,data.fraud_7d_count,"Fraud Count (7d)","#329ae6","bar");
-      renderChart("fraudCountChart30d",data.labels_30d,data.fraud_30d_count,"Fraud Count (30d)","#2178b5","bar");
-      renderChart("fraudCountChartAll",data.labels_all,data.fraud_all_count,"Fraud Count (All)","#c8e2f7","bar");
-    }).finally(()=>document.getElementById("loader").classList.add("d-none"));
-}
-
-document.getElementById("filter7").addEventListener("click",()=>fetchDashboardData("7"));
-document.getElementById("filter30").addEventListener("click",()=>fetchDashboardData("30"));
-document.getElementById("filterAll").addEventListener("click",()=>fetchDashboardData("all"));
-window.onload=()=>fetchDashboardData("all");
 </script>
 {% endblock %}
