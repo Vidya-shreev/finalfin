@@ -201,7 +201,11 @@
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                window.location.href = "{% url 'dashboard' %}";
+                form.reset();
+                if (typeof fetchDashboardData === "function") {
+                    fetchDashboardData("all");
+                }
+                alert("✅ Transaction added successfully.");
             } else {
                 alert("❌ Error: " + (data.error || "Something went wrong."));
             }
