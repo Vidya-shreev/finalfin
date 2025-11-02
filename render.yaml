@@ -7,7 +7,7 @@ services:
       pip install -r requirements.txt
       python manage.py collectstatic --noinput
       python manage.py migrate
-    startCommand: gunicorn backend.wsgi:application
+    startCommand: gunicorn backend.wsgi:application --workers 1 --threads 2 --timeout 120 --max-requests 1000
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: backend.settings
